@@ -1,0 +1,75 @@
+import pygame, sys
+import random
+import os
+
+width = 480
+height = 600
+fps = 60
+
+white = (255, 255, 255)
+black = (0, 0, 0)
+darkgrey = (40, 40, 40)
+lightgrey = (100, 100, 100)
+green = (0, 255, 0)
+red = (255, 0, 0)
+yellow = (255, 255, 0)
+blue = (0, 0, 255)
+
+
+# set up assets
+
+game_folder = os.path.dirname(__file__)
+img_folder = os.path.join(game_folder, "haha")
+
+
+class Player(pygame.sprite.Sprite):
+    # sprite for the Player
+    def __init__(self):
+        pygame.sprite.Sprite.__init__(self)
+        self.image = pygame.image.load(os.path.join(img_folder, "asxc.png")).convert()
+        self.image.set_colorkey(black)
+        self.rect = self.image.get_rect()
+        self.rect.center = (width / 2, height / 2)
+        self.y_speed = 5
+
+    def update(self):
+        self.rect.x += 5
+        self.rect.y += self.y_speed
+        if self.rect.bottom > height - 200:
+            self.y_speed = -5
+        if self.rect.top < 200:
+            self.y_speed = 5
+        if self.rect.left > width:
+            self.rect.right = 0
+
+
+# sprite for player
+
+# initialize pygame and create window
+pygame.init()
+pygame.mixer.init()
+pencere = pygame.display.set_mode((width, height))
+icon = pygame.image.load("spaceship.png")
+pygame.display.set_icon(icon)
+pygame.display.set_caption("My Game")
+clock = pygame.time.Clock()
+
+all_sprites = pygame.sprite.Group()
+player = Player()
+all_sprites.add(player)
+
+# Game Loop
+while True:
+    # process input (events)
+    for event in pygame.event.get():
+        if pygame.QUIT == event.type: sys.exit()
+        clock.tick(fps)
+
+        # update
+        all_sprites.update()
+
+        # draw / render
+        pencere.fill(blue)
+        all_sprites.draw(pencere)
+        # *after* drawing everything, flip the display
+        pygame.display.flip()

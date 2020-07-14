@@ -49,8 +49,6 @@ class Player(pygame.sprite.Sprite):
 pygame.init()
 pygame.mixer.init()
 pencere = pygame.display.set_mode((width, height))
-icon = pygame.image.load("spaceship.png")
-pygame.display.set_icon(icon)
 pygame.display.set_caption("My Game")
 clock = pygame.time.Clock()
 
